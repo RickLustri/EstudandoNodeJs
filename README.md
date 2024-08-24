@@ -548,3 +548,202 @@
 > - O `debugger` é uma palavra-chave que, ao ser atingida, pausa a execução do código.
 > - Ao rodar o código com `node inspect script.js`, o depurador é ativado, permitindo examinar o estado do programa no ponto de interrupção.
 >> ###### Você pode aprender mais sobre no artigo: [MDN - Error](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error)
+
+<br>
+
+> <h2 align="center">Introdução a Programação Assíncrona</h2>
+> Programação assíncrona é uma técnica que permite que um programa execute tarefas sem precisar esperar que uma tarefa seja concluída antes de iniciar a próxima. Em JavaScript, isso é fundamental para garantir que a aplicação continue responsiva, especialmente em ambientes de execução como navegadores e servidores.
+> 
+> ### # Event Emitter
+> Um Event Emitter é um padrão que permite que objetos emitam eventos e outros objetos escutem e respondam a esses eventos. Esse padrão é amplamente utilizado em Node.js para a comunicação entre diferentes partes de uma aplicação.
+>
+> #### **Exemplo:**
+> ```javascript
+> // Importa o módulo EventEmitter
+> const EventEmitter = require('events'); 
+> 
+> // Cria uma nova instância do EventEmitter
+> const myEmitter = new EventEmitter();
+> 
+> // Define um ouvinte para o evento 'event'
+> myEmitter.on('event', () => {
+>   console.log('Um evento ocorreu!');
+> });
+> 
+> // Emite o evento 'event'
+> myEmitter.emit('event');
+> ```
+> 1. Importamos o módulo `events` e criamos uma instância do `EventEmitter`.
+> 2. Usamos o método `on` para registrar um ouvinte para o evento chamado `'event'`.
+> 3. O ouvinte registrado executará uma função que imprime uma mensagem no console.
+> 4. Em seguida, usamos o método `emit` para emitir o evento `'event'`, o que aciona o ouvinte registrado e imprime a mensagem.
+>
+> ### # Event Loop
+> O Event Loop é um mecanismo que permite ao JavaScript executar código de forma assíncrona e gerenciar o tempo de execução de tarefas. Ele é responsável por garantir que o JavaScript continue a processar operações enquanto espera por operações assíncronas.
+> 
+> #### **Exemplo:**
+> ```javascript
+> console.log('Início');
+> 
+> setTimeout(() => {
+>   console.log('Executando após 2 segundos');
+> }, 2000);
+> 
+> console.log('Fim');
+>
+> /*
+> Saída:
+>         Início
+>         Fim
+>         Executando após 2 segundos
+> */
+> 
+> ```
+> 1. O `console.log('Início')` é executado imediatamente e imprime `'Início'`.
+> 2. O `setTimeout` agenda a execução de uma função após 2 segundos, mas não bloqueia o restante do código.
+> 3. O `console.log('Fim')` é executado imediatamente após o início do `setTimeout`.
+> 4. Após 2 segundos, a função dentro do `setTimeout` é executada, imprimindo `'Executando após 2 segundos'`.
+>
+> - O Event Loop garante que o código assíncrono seja executado após o código síncrono.
+>
+> ---
+>
+> ### Writing Async Code
+> Escrever código assíncrono é essencial para garantir que operações demoradas não bloqueiem o restante do código. Existem várias maneiras de escrever código assíncrono em JavaScript: Promises, `async/await`, Callbacks, e métodos de temporização como `setTimeout` e `setInterval`.
+> 
+> ### # Promises
+> Promises são objetos que representam a eventual conclusão (ou falha) de uma operação assíncrona e permitem encadear ações a serem realizadas após a conclusão da operação.
+> 
+> #### **Exemplo:**
+> ```javascript
+> const minhaPromise = new Promise((resolve, reject) => {
+>   setTimeout(() => {
+>     resolve('Operação concluída com sucesso!');
+>   }, 2000);
+> });
+> 
+> minhaPromise.then(result => {
+>   console.log(result); // Imprime: 'Operação concluída com sucesso!'
+> }).catch(error => {
+>   console.log('Erro:', error);
+> });
+> ```
+> 1. Criamos uma nova Promise que resolve após 2 segundos com a mensagem `'Operação concluída com sucesso!'`.
+> 2. Usamos o método `then` para definir o que fazer quando a Promise é resolvida.
+> 3. Usamos o método `catch` para tratar possíveis erros.
+> 
+> ### # async/await
+> `async` e `await` são uma maneira de escrever código assíncrono que parece síncrono, tornando-o mais fácil de ler e entender.
+> 
+> #### **Exemplo:**
+> ```javascript
+> function espera(ms) {
+>   return new Promise(resolve => setTimeout(resolve, ms));
+> }
+> 
+> async function executar() {
+>   console.log('Início');
+> 
+>   await espera(2000); // Espera 2 segundos
+> 
+>   console.log('2 segundos se passaram');
+> }
+> 
+> executar();
+> ```
+> 1. Definimos uma função `espera` que retorna uma Promise que resolve após um tempo especificado.
+> 2. Usamos a palavra-chave `async` para criar uma função assíncrona `executar`.
+> 3. Dentro de `executar`, usamos `await` para esperar a resolução da Promise retornada por `espera`.
+> 4. O código parece síncrono, mas realmente está aguardando a Promise ser resolvida.
+> 
+> ### # Callbacks
+> Callbacks são funções passadas como argumentos para outras funções e são executadas quando a operação assíncrona é concluída.
+>
+> #### **Exemplo:**
+> ```javascript
+> function executarDepoisDe(ms, callback) {
+>   setTimeout(callback, ms);
+> }
+> 
+> executarDepoisDe(2000, () => {
+>   console.log('2 segundos se passaram');
+> });
+> ```
+> 1. Definimos a função `executarDepoisDe`, que recebe um tempo em milissegundos e uma função `callback`.
+> 2. Usamos `setTimeout` para executar a função `callback` após o tempo especificado.
+> 3. Passamos uma função de callback para `executarDepoisDe` que imprime uma mensagem após 2 segundos.
+> 
+> ### # setTimeout
+> `setTimeout` é usado para executar uma função após um atraso especificado em milissegundos.
+>
+> #### **Exemplo:**
+> ```javascript
+> console.log('Início');
+> 
+> setTimeout(() => {
+>   console.log('Executado após 3 segundos');
+> }, 3000);
+> 
+> console.log('Fim');
+> ```
+> 1. O `console.log('Início')` é executado imediatamente.
+> 2. `setTimeout` agenda a execução de uma função após 3 segundos.
+> 3. O `console.log('Fim')` é executado imediatamente após o `setTimeout`.
+> 4. Após 3 segundos, a função do `setTimeout` é executada, imprimindo `'Executado após 3 segundos'`.
+> 
+> ### # setInterval
+> `setInterval` é usado para executar uma função repetidamente com um intervalo de tempo específico.
+> 
+> #### **Exemplo:**
+> ```javascript
+> let contador = 0;
+> 
+> const intervalo = setInterval(() => {
+>   console.log('Executado a cada 2 segundos');
+>   contador++;
+> 
+>   if (contador === 3) {
+>     clearInterval(intervalo); // Para o intervalo após 3 execuções
+>   }
+> }, 2000);
+> ```
+> 1. Definimos um contador para rastrear o número de execuções.
+> 2. `setInterval` executa a função a cada 2 segundos e incrementa o contador.
+> 3. Quando o contador atinge 3, usamos `clearInterval` para parar o intervalo.
+> 
+> ### # setImmediate
+> `setImmediate` é usado para executar uma função imediatamente após o ciclo de eventos atual. Está disponível apenas em ambientes Node.js.
+>
+> #### **Exemplo:**
+> ```javascript
+> console.log('Início');
+> 
+> setImmediate(() => {
+>   console.log('Executado imediatamente após o ciclo de eventos');
+> });
+> 
+> console.log('Fim');
+> ```
+> 1. O `console.log('Início')` é executado imediatamente.
+> 2. `setImmediate` agenda a execução de uma função assim que o ciclo de eventos atual termina.
+> 3. O `console.log('Fim')` é executado imediatamente após o `setImmediate`.
+> 4. Após o ciclo de eventos, a função do `setImmediate` é executada, imprimindo `'Executado imediatamente após o ciclo de eventos'`.
+> 
+> ### # process.nextTick
+> `process.nextTick` é usado para executar uma função na próxima iteração do loop de eventos, antes que qualquer outro código assíncrono seja executado. Também disponível apenas em Node.js.
+> 
+> #### **Exemplo:**
+> ```javascript
+> console.log('Início');
+> 
+> process.nextTick(() => {
+>   console.log('Executado na próxima iteração do loop de eventos');
+> });
+> 
+> console.log('Fim');
+> ```
+> 1. O `console.log('Início')` é executado imediatamente.
+> 2. `process.nextTick` agenda a execução de uma função na próxima iteração do loop de eventos.
+> 3. O `console.log('Fim')` é executado imediatamente após o `process.nextTick`.
+> 4. A função do `process.nextTick` é executada na próxima iteração do loop de eventos, imprimindo `'Executado na próxima iteração do loop de eventos'`.
+>> ###### Você pode aprender mais sobre no artigo: [JavaScript info](https://javascript.info/)
