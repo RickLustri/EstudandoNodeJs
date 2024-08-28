@@ -1192,3 +1192,245 @@
 > Esses pacotes de código aberto fornecem ferramentas essenciais e funcionalidades avançadas para trabalhar com arquivos e diretórios no Node.js. Desde a busca de arquivos com `glob` e `globby`, até a manipulação aprimorada de arquivos com `fs-extra`, e o monitoramento em tempo real com `chokidar`, essas ferramentas expandem o poder do Node.js, tornando-o ainda mais versátil e eficiente para manipulação de arquivos.
 >> ###### Você pode aprender mais sobre no artigo: [MDN - Guia NodeJs](https://developer.mozilla.org/en-US/docs/Learn/Server-side/Node_server_without_framework)
 
+<br>
+
+
+> <h2 align="center">Aplicações de linha de comando</h2>
+>
+> ### # Exiting and Exit Codes
+> #### Exiting a Node.js Application
+> Para sair de uma aplicação Node.js, você pode usar a função `process.exit()`. Este método encerra o processo atual com um código de saída opcional.
+>
+> #### **Exemplo:**
+> ```javascript
+> console.log("Aplicação iniciada.");
+> 
+> // Encerra a aplicação com código de saída 0 (sucesso)
+> process.exit(0);
+> ```
+> 
+> #### Exit Codes
+> Os códigos de saída são números que o processo retorna ao sistema operacional quando ele termina. O código 0 geralmente indica sucesso, enquanto qualquer outro código indica um erro.
+> 
+> #### **Exemplo:**
+> ```javascript
+> console.log("Aplicação com erro.");
+> 
+> process.exit(1); // Código 1 indica um erro
+> ```
+> 
+> ### # Environment Variables
+> #### process.env
+> `process.env` é um objeto que contém todas as variáveis de ambiente do sistema onde a aplicação está sendo executada.
+> 
+> #### **Exemplo:**
+> ```javascript
+> // Acessa uma variável de ambiente chamada 'MY_VARIABLE'
+> const myVariable = process.env.MY_VARIABLE || 'valor padrão';
+> console.log(`O valor da variável MY_VARIABLE é: ${myVariable}`);
+> ```
+> 
+> #### dotenv Package
+> O pacote `dotenv` permite carregar variáveis de ambiente de um arquivo `.env` para `process.env`.
+> 
+> #### **Instalação:**
+> ```bash
+> npm install dotenv
+> ```
+>
+> #### **Exemplo:**
+> 1. Crie um arquivo `.env`:
+> ```
+> MY_VARIABLE=valor_importado
+> ```
+> 2. Utilize o `dotenv` no seu código:
+> ```javascript
+> require('dotenv').config();
+> 
+> const myVariable = process.env.MY_VARIABLE;
+> console.log(`O valor da variável MY_VARIABLE é: ${myVariable}`);
+> ```
+> 
+> ### # Taking Input
+> #### process.stdin
+> `process.stdin` é um fluxo de leitura que permite ler a entrada do usuário via terminal.
+>
+> #### **Exemplo:**
+> ```javascript
+> process.stdin.setEncoding('utf8');
+>
+> console.log('Digite algo e pressione Enter:');
+> 
+> process.stdin.on('data', (input) => {
+>     console.log(`Você digitou: ${input.trim()}`);
+>     process.exit();
+> });
+> ```
+> 
+> #### Inquirer Package
+> O pacote `inquirer` facilita a criação de prompts interativos.
+> 
+> #### **Instalação:**
+> ```bash
+> npm install inquirer
+>```
+>
+> #### **Exemplo:**
+> ```javascript
+> const inquirer = require('inquirer');
+> 
+> inquirer.prompt([
+>     {
+>         type: 'input',
+>         name: 'name',
+>         message: 'Qual é o seu nome?'
+>     }
+> ]).then(answers => {
+>     console.log(`Olá, ${answers.name}!`);
+> });
+> ```
+>
+> #### prompts Package
+> O pacote `prompts` também é utilizado para criar prompts interativos.
+> 
+> ####**Instalação:**
+> ```bash
+> npm install prompts
+> ```
+> 
+> #### **Exemplo:**
+> ```javascript
+> const prompts = require('prompts');
+> 
+> (async () => {
+>     const response = await prompts({
+>         type: 'text',
+>         name: 'name',
+>         message: 'Qual é o seu nome?'
+>     });
+> 
+>     console.log(`Olá, ${response.name}!`);
+> })();
+> ```
+>
+> ### # Printing Output
+> #### stdout / stderr
+> `stdout` e `stderr` são fluxos de saída padrão e de erro padrão, respectivamente.
+>
+> #### **Exemplo:**
+> ```javascript
+> // Saída padrão
+> process.stdout.write('Mensagem para stdout\n');
+> 
+> // Saída de erro
+> process.stderr.write('Mensagem para stderr\n');
+> ```
+> 
+> #### chalk Package
+> O pacote `chalk` permite colorir o texto no terminal.
+> 
+> #### **Instalação:**
+> ```bash
+> npm install chalk
+> ```
+> 
+> #### **Exemplo:**
+> ```javascript
+> const chalk = require('chalk');
+> 
+> console.log(chalk.green('Texto em verde'));
+> console.log(chalk.red.bold('Texto em vermelho e negrito'));
+> ```
+> 
+> #### figlet Package
+> O pacote `figlet` gera texto em estilo de arte ASCII.
+> 
+> #### **Instalação:**
+> ```bash
+> npm install figlet
+> ```
+> 
+> #### **Exemplo:**
+> ```javascript
+> const figlet = require('figlet');
+> 
+> figlet('Olá Mundo!', (err, data) => {
+>     if (err) {
+>         console.log('Algo deu errado...');
+>         console.dir(err);
+>         return;
+>     }
+>     console.log(data);
+> });
+> ```
+> 
+> #### cli-progress Package
+> O pacote `cli-progress` é utilizado para criar barras de progresso no terminal.
+> 
+> #### **Instalação:**
+> ```bash
+> npm install cli-progress
+> ```
+> 
+> #### **Exemplo:**
+> ```javascript
+> const cliProgress = require('cli-progress');
+> 
+> // Cria uma nova barra de progresso
+> const bar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
+> 
+> // Inicia a barra de progresso
+> bar.start(100, 0);
+> 
+> // Atualiza a barra de progresso
+> for (let i = 0; i <= 100; i++) {
+>     bar.update(i);
+>     // Simula um atraso
+>    require('deasync').sleep(50);
+> }
+> 
+> // Finaliza a barra de progresso
+> bar.stop();
+> ```
+> 
+> ### # Command Line Args
+> #### process.argv
+> `process.argv` é um array que contém os argumentos da linha de comando passados para o processo Node.js.
+> 
+> #### **Exemplo:**
+> ```javascript
+> // Acessa argumentos da linha de comando
+> const args = process.argv.slice(2);
+> 
+> console.log('Argumentos da linha de comando:');
+> args.forEach((arg, index) => {
+>     console.log(`Argumento ${index + 1}: ${arg}`);
+> });
+> ```
+> 
+> #### commander
+> O pacote `commander` facilita o gerenciamento de argumentos e opções da linha de comando.
+> 
+> #### **Instalação:**
+> ```bash
+> npm install commander
+> ```
+> 
+> #### **Exemplo:**
+> ```javascript
+> const { program } = require('commander');
+> 
+> program
+>     .version('1.0.0')
+>     .description('Descrição da minha aplicação CLI')
+>     .option('-n, --name <type>', 'Nome do usuário')
+>     .parse(process.argv);
+> 
+> const options = program.opts();
+> if (options.name) {
+>     console.log(`Olá, ${options.name}!`);
+> } else {
+>     console.log('Olá, mundo!');
+> }
+> ``` 
+>> ###### Você pode aprender mais sobre nesse repositorio: [awesome-nodejs](https://github.com/sindresorhus/awesome-nodejs#cli)
